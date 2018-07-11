@@ -1,325 +1,384 @@
 <!DOCTYPE html>
-<html lang="en">
-
-<!-- Head tag -->
+<html>
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="keyword" content="">
-    <meta name="theme-color" content="#600090">
-    <meta name="msapplication-navbutton-color" content="#600090">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="#600090">
-    <link rel="shortcut icon" href="https://cdn4.iconfinder.com/data/icons/ionicons/512/icon-person-128.png">
-    <link rel="alternate" type="application/atom+xml" title="Sunny.SLX的个人博." href="/atom.xml">
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
-    <link rel="stylesheet" href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.css">
-    <title>
-        
-        浅谈Android MediaPlayer｜undefined
-        
-    </title>
-
-    <link rel="canonical" href="http://yoursite.com/2018/07/10/my-first/">
-
-    <!-- Bootstrap Core CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
-
-    <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/blog-style.css">
-
-    <!-- Pygments Github CSS -->
-    <link rel="stylesheet" href="/css/syntax.css">
-</head>
-
-<style>
-
-    header.intro-header {
-        background-image: url('')
-    }
-</style>
-<!-- hack iOS CSS :active style -->
-<body ontouchstart="" class="animated fadeIn">
-<!-- Navigation -->
-<nav class="navbar navbar-default navbar-custom navbar-fixed-top " id="nav-top" data-ispost = "true" data-istags="false
-" data-ishome = "false" >
-    <div class="container-fluid">
-        <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header page-scroll">
-            <button type="button" class="navbar-toggle">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand animated pulse" href="/">
-                <span class="brand-logo">
-                    Sunny.SLX的个人博.
-                </span>
-                's Blog
-            </a>
-        </div>
-
-        <!-- Collect the nav links, forms, and other content for toggling -->
-        <!-- Known Issue, found by Hux:
-            <nav>'s height woule be hold on by its content.
-            so, when navbar scale out, the <nav> will cover tags.
-            also mask any touch event of tags, unfortunately.
-        -->
-        <!-- /.navbar-collapse -->
-        <div id="huxblog_navbar">
-            <div class="navbar-collapse">
-                <ul class="nav navbar-nav navbar-right">
-                    <li>
-                        <a href="/">Home</a>
-                    </li>
-					
-                    
-					
-					
-                </ul>
-            </div>
-        </div>
-    </div>
-    <!-- /.container -->
-</nav>
-<script>
-    // Drop Bootstarp low-performance Navbar
-    // Use customize navbar with high-quality material design animation
-    // in high-perf jank-free CSS3 implementation
-//    var $body   = document.body;
-    var $toggle = document.querySelector('.navbar-toggle');
-    var $navbar = document.querySelector('#huxblog_navbar');
-    var $collapse = document.querySelector('.navbar-collapse');
-
-    $toggle.addEventListener('click', handleMagic)
-    function handleMagic(e){
-        if ($navbar.className.indexOf('in') > 0) {
-        // CLOSE
-            $navbar.className = " ";
-            // wait until animation end.
-            setTimeout(function(){
-                // prevent frequently toggle
-                if($navbar.className.indexOf('in') < 0) {
-                    $collapse.style.height = "0px"
-                }
-            },400)
-        }else{
-        // OPEN
-            $collapse.style.height = "auto"
-            $navbar.className += " in";
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="author" content="Sunny.SLX">
+    
+    
+    
+    
+    
+    
+    <title>浅谈Android MediaPlayer | Sunny.SLX的个人博.</title>
+    <!-- inject:style -->
+    <link href="/css/style.css" rel="stylesheet" type="text/css">
+    <!-- endinject -->
+    <style>
+        .cube-loading {
+            top: 0;
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            background: url('/images/lg/loading.gif') no-repeat center center;
+            background-color: rgba(0,0,0,.7);
         }
-    }
-</script>
 
-<!-- Main Content -->
+        .cube-loading.out {
+            display: none;
+        }
 
-<!--only post-->
+        .cube-loading:before {
+            display: block;
+            content: 'Loading';
+            position: relative;
+            width: 100%;
+            top: 50%;
+            right: -50%;
+            color: #fff;
+        }
 
+        @media(max-width: 768px) {
+            .cube-loading:before {
+                font-size: 1.2em;
+                transform: translate(-24px,20px);
+                -webkit-transform: translate(-24px,20px);
+                -o-transform: translate(-24px,20px);
+                -ms-transform: translate(-24px,20px);
+            }
+        }
 
-<img class="wechat-title-img"
-     src="">
+        @media(min-width: 768px) {
+            .cube-loading:before {
 
-
-<style>
+            }
+        }
+    </style>
     
-    header.intro-header {
-        background-image: url('')
-    }
-
+</head>
+<body>
+<div class="cube-body">
+    <nav id="cube-top-memu" class="cube-menu">
+    <ul class="cube-menu-collapse">
+        
+        <li>
+            <i class="cube-icon cube-icon-home" aria-hidden="true"></i>
+            <a href="/">首页</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-archive" aria-hidden="true"></i>
+            <a href="/archives">归档</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-categories" aria-hidden="true"></i>
+            <a href="/categories">分类</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-tags" aria-hidden="true"></i>
+            <a href="/tags">标签</a>
+        </li>
+        
+        <li>
+            <i class="cube-icon cube-icon-about" aria-hidden="true"></i>
+            <a href="/about-me">关于我</a>
+        </li>
+        
+    </ul>
+</nav>
+<nav class="cube-side-menu" id="cube-side-menu">
+    <ul class="cube-menu-list">
+        
+        <li>
+            <a class="lrc-control">Open Lyrics</a>
+        </li>
+        
+        <li>
+            <a class="scroll-to-top">Top</a>
+        </li>
+    </ul>
+</nav>
+    <header class="cube-header" id="cube-header">
+    <img src=" http://cube-1252774894.cosgz.myqcloud.com/background.png " alt="头部背景图片">
     
-</style>
-
-<header class="intro-header">
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
-                <div class="post-heading">
-                    <h1>浅谈Android MediaPlayer</h1>
-                    
-                    <span class="meta">
-                         作者 Sunny.SLX
-                        <span>
-                          日期 2018-07-10
-                         </span>
-                    </span>
-                    <div class="tags text-center">
-                        
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div class="cube-type">
+        <span class="cube-typed-title">Sunny.SL.Xie的个人博</span>
+        <span class="cube-typed-cursor">|</span>
     </div>
-    <div class="post-title-haojen">
-        <span>
-            浅谈Android MediaPlayer
-        </span>
-    </div>
+    
 </header>
 
-<!-- Post Content -->
-<article>
-    <div class="container">
-        <div class="row">
-            <!-- Post Container -->
-            <div class="col-lg-8 col-lg-offset-1 col-sm-9 post-container">
-                <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>MediaPlayer是Android中多媒体框架中一个重要的组件,我们通过它可以控制在线或者本地音视频的播放过程.</p>
+    <style>
+        nav.cube-menu:before {
+            content: '';
+            visibility: hidden;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 44px;
+        
+            filter: blur(5px);
+            -webkit-filter: blur(5px);
+        
+            z-index: -1;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-repeat: no-repeat;
+            background-position: center -356px;
+            background-size: cover;
+            background-color: transparent;
+        }
+
+        header.cube-background.cube-header-background {
+            visibility: hidden;
+            background-image: url('http://cube-1252774894.cosgz.myqcloud.com/background.png');
+            background-position: center -400px;
+        }
+    </style>
+    <header class="cube-background cube-header-background">
+        
+        <div class="cube-type">
+            <span class="cube-typed-title">Sunny.SL.Xie的个人博</span>
+            <span class="cube-typed-cursor">|</span>
+        </div>
+        
+    </header>
+    <div class="load-header-background"></div>
+    <script>
+        (function (window) {
+
+            window.headerModule = {}
+            window.headerModule.image = {
+                width: '2000',
+                height: '1414'
+            }
+
+        })(window)
+    </script>
+    
+    <div class="cube-content">
+        <div class="cube-left">
+            <div class="cube-article">
+    <h1 class="title">浅谈Android MediaPlayer</h1>
+    
+    <div class="cube-article-header">
+        <div class="cube-article-date">
+            <i class="cube-icon cube-icon-date" aria-hidden="true"></i>
+            <!-- moment.js对象 -->
+            2018-07-10
+        </div>
+        <div class="cube-article-tags">
+    <i class="cube-icon cube-icon-tag" aria-hidden="true"></i>
+    
+</div>
+    </div>
+    
+    <div class="cube-article-content cube-markdown">
+        
+        <h1 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h1><p>MediaPlayer是Android中多媒体框架中一个重要的组件,我们通过它可以控制在线或者本地音视频的播放过程.</p>
 <h1 id="MeidaPlayer具体方法介绍"><a href="#MeidaPlayer具体方法介绍" class="headerlink" title="MeidaPlayer具体方法介绍"></a>MeidaPlayer具体方法介绍</h1><p>void</p>
 
-                <hr>
-                
-
-                <ul class="pager">
-                    
-                    
-                    <li class="next">
-                        <a href="/2018/07/10/my_second/" data-toggle="tooltip" data-placement="top"
-                           title="Android MediaPlayer">Next Post &rarr;</a>
-                    </li>
-                    
-                </ul>
-
-                
-
-                
-
-
-                <!--加入新的评论系统-->
-                
-            </div>
-
-            <div class="hidden-xs col-sm-3 toc-col">
-                <div class="toc-wrap">
-                    <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#前言"><span class="toc-text">前言</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#MeidaPlayer具体方法介绍"><span class="toc-text">MeidaPlayer具体方法介绍</span></a></li></ol>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <!-- Sidebar Container -->
-
-            <div class="
-                col-lg-8 col-lg-offset-2
-                col-md-10 col-md-offset-1
-                sidebar-container">
-
-                <!-- Featured Tags -->
-                
-
-                <!-- Friends Blog -->
-                
-            </div>
-        </div>
-
     </div>
-</article>
+</div>
+
+<div class="cube-article-nav">
+    <ul>
+        
+        
+        <li class="next">
+            <a href="/2018/07/10/my_second/">
+                Android MediaPlayer
+                <i class="cube-icon cube-next" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+<!-- TODO 根据theme.comment的内容进行入口选择 -->
 
 
 
+        </div>
+        <div class="cube-right">
+            
+
+
+<div class="cube-author cube-sidebar" id="cube-author">
+    
+    
+    <span>Sunny.SLX</span>
+    
+    
+    <div class="count">
+        <a class="count articles"><span>3</span>Article</a>
+        <a class="count tags"><span>0</span>Tags</a>
+        <a class="count categories"><span>0</span>Categories</a>
+    </div>
+</div>
 
 
 
+<div class="cube-music cube-sidebar" id="cube-music">
+    <div class="cube-player aplayer" id="cube-player"></div>
+</div>
+<script>
+    (function (window) {
+        window.musicModule = {}
+        window.musicModule.musicConfig = '{"narrow":false,"autoplay":false,"showlrc":3,"theme":"#b7daff","mutex":true,"mode":"circulation","preload":"auto","listmaxheight":"513px","music":[{"title":"Dear friends","author":"TRIPLANE","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/TRIPLANE - Dear friends.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Dear friends - TRIPLANE.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/TRIPLANE - Dear friends.jpg"},{"title":"Butter-Fly","author":"和田光司","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/和田光司 - Butter-Fly (ピアノヴァージョン).mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/Butter-Fly (ピアノヴァージョン) - 和田光司.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/和田光司 - Butter-Fly (ピアノヴァージョン).jpg"},{"title":"宵闇花火","author":"葉月ゆら","url":"http://cube-1252774894.cosgz.myqcloud.com/music/source/葉月ゆら - 宵闇花火.mp3","lrc":"http://cube-1252774894.cosgz.myqcloud.com/music/lrc/宵闇花火 - 葉月ゆら.lrc","pic":"http://cube-1252774894.cosgz.myqcloud.com/music/image/葉月ゆら - 宵闇花火.jpg"}]}'
+        window.musicModule.lrcConfig = {
+            open: 'Open Lyrics',
+            close: 'Close Lyrics'
+        }
+    })(window)
+</script>
 
-<!-- Footer -->
-<!-- Footer -->
-<footer>
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1 text-center">
-                <br>
-                <ul class="list-inline text-center">
-                
-                
-                
 
-                
 
-                
-
-                
-
-                
-
-                </ul>
-                <p class="copyright text-muted">
-                    Copyright &copy; Sunny.SLX的个人博. 2018
-                    <br>
-                    <span id="busuanzi_container_site_pv" style="font-size: 12px;">PV: <span id="busuanzi_value_site_pv"></span> Times</span>
-                    <br>
-                    Theme by <a href="https://haojen.github.io/">Haojen Ma</a>
+<div class="cube-recent-posts cube-sidebar" id="cube-recent-posts">
+    <div class="title">
+        <a>Recent Posts</a>
+    </div>
+    <ul class="list">
+        
+        
+        <li>
+            <!-- TODO 如果文章要显示图片，那么在front-matter上添加preview属性(url or path) -->
+            
+            <div class="normal">
+                <p class="index first">
+                    <span>1</span>
                 </p>
-
+                <p class="title">
+                    <a href="/2018/07/10/my-first/" title="浅谈Android MediaPlayer">浅谈Android MediaPlayer</a>
+                </p>
             </div>
+            
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>2</span>
+                </p>
+                <p class="title">
+                    <a href="/2018/07/10/my_second/" title="Android MediaPlayer">Android MediaPlayer</a>
+                </p>
+            </div>
+        </li>
+        
+        
+        
+        <li>
+            <div class="normal">
+                <p class="index">
+                    <span>3</span>
+                </p>
+                <p class="title">
+                    <a href="/2018/07/07/hello-world/" title="Hello World">Hello World</a>
+                </p>
+            </div>
+        </li>
+        
+        
+    </ul>
+</div>
+
+
+
+
+
+
+
+<div class="cube-links cube-sidebar" id="cube-links">
+    <div class="title">
+        <a>Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/GitHub.png">
+            
+            <a href="https://github.com/ZEROKISEKI" target="_blank">GitHub</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/Coding.png">
+            
+            <a href="https://coding.net/u/SORA1" target="_blank">Coding</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/SF.png">
+            
+            <a href="https://segmentfault.com/u/aonosora" target="_blank">SF社区</a>
+        </li>
+        
+        <li>
+            
+            
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/links/开发者头条.png">
+            
+            <a href="https://toutiao.io/u/148070" target="_blank">开发者头条</a>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+<div class="cube-friend-links cube-sidebar" id="cube-friend-links">
+    <div class="title">
+        <a>Friend Links</a>
+    </div>
+    <ul class="list">
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/micblo.png">
+            <a href="https://blog.micblo.com/" target="_blank">罗大佬</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="http://cube-1252774894.cosgz.myqcloud.com/friend_links/DIYgod.jpg">
+            <a href="https://www.anotherhome.net/" target="_blank">DIYgod</a>
+        </li>
+        
+        <li>
+            <!-- TODO change avatar.png to friend.png-->
+            <img src="/images/friend_links.jpg ">
+            <a href="https://aonosora.com/" target="_blank">咪西西の部落格</a>
+        </li>
+        
+    </ul>
+</div>
+
+
         </div>
     </div>
+</div>
+<footer class="cube-footer">
+    
+© 2017 Sunny.SLX
+
+<br>
+Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>.&nbsp;Theme by <a href="https://github.com/ZEROKISEKI" target="_blank">AONOSORA</a>
 </footer>
-
-<!-- jQuery -->
-<script src="/js/jquery.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="/js/bootstrap.min.js"></script>
-
-<!-- Custom Theme JavaScript -->
-<script src="/js/blog.js"></script>
-
-<!-- async load function -->
-<script>
-    function async(u, c) {
-      var d = document, t = 'script',
-          o = d.createElement(t),
-          s = d.getElementsByTagName(t)[0];
-      o.src = u;
-      if (c) { o.addEventListener('load', function (e) { c(null, e); }, false); }
-      s.parentNode.insertBefore(o, s);
-    }
-</script>
-
-<!-- jquery.tagcloud.js -->
-<script>
-    // only load tagcloud.js in tag.html
-    if($('#tag_cloud').length !== 0){
-        async("http://yoursite.com/js/jquery.tagcloud.js",function(){
-            $.fn.tagcloud.defaults = {
-                //size: {start: 1, end: 1, unit: 'em'},
-                color: {start: '#bbbbee', end: '#0085a1'},
-            };
-            $('#tag_cloud a').tagcloud();
-        })
-    }
-</script>
-
-<!--fastClick.js -->
-<script>
-    async("//cdn.bootcss.com/fastclick/1.0.6/fastclick.min.js", function(){
-        var $nav = document.querySelector("nav");
-        if($nav) FastClick.attach($nav);
-    })
-</script>
-
-<!-- Google Analytics -->
-
-
-
-<!-- Baidu Tongji -->
-
-
-<!-- swiftype -->
-<script type="text/javascript">
-  (function(w,d,t,u,n,s,e){w['SwiftypeObject']=n;w[n]=w[n]||function(){
-  (w[n].q=w[n].q||[]).push(arguments);};s=d.createElement(t);
-  e=d.getElementsByTagName(t)[0];s.async=1;s.src=u;e.parentNode.insertBefore(s,e);
-  })(window,document,'script','//s.swiftypecdn.com/install/v2/st.js','_st');
-
-  _st('install','','2.0.0');
-</script>
-
-<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-<!--wechat title img-->
-<img class="wechat-title-img" src="">
+<!-- inject:script -->
+<script src="/js/script.js"></script>
+<!-- endinject -->
+<div class="cube-loading out"></div>
 </body>
-
 </html>
