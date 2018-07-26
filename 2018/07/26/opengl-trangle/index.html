@@ -37,7 +37,7 @@
     <link rel="alternate" type="application/rss+xml" title="Sunny.SLX的个人博." href="/atom.xml">
     
 
-    <link rel="canonical" href="http://yoursite.com/2018/07/21/opgl/"/>
+    <link rel="canonical" href="http://yoursite.com/2018/07/26/opengl-trangle/"/>
 
                  
 </head>
@@ -146,7 +146,7 @@
 
   <header class="post-header">
     <div class="post-meta">
-      <time datetime="2018-07-21T00:31:55.685Z" class="post-list__meta--date date">2018-07-21</time> &#8226; <span class="post-meta__tags tags">于  </span>
+      <time datetime="2018-07-26T10:13:24.604Z" class="post-list__meta--date date">2018-07-26</time> &#8226; <span class="post-meta__tags tags">于  </span>
       <span class="page-pv">
        Read <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
       </span> 
@@ -166,7 +166,7 @@
 <h2 id="绘制三角形"><a href="#绘制三角形" class="headerlink" title="绘制三角形"></a>绘制三角形</h2><p>首先需要定义如下内容:<br>(1) Vertex Shader -顶点着色器,用于渲染形状顶点的OpenGL ES图形代码。<br>(2)Fragment Shader -OpenGL ES代码，用于渲染具有颜色或纹理的形状的面。<br>(3) Program -一个OpenGL ES对象，包含要用于绘制一个或多个形状的着色器。<br>我们需要至少一个顶点着色器来绘制形状，并使用一个片段着色器为该形状着色。必须编译这些着色器，然后将其添加到OpenGL ES程序中，然后使用该程序绘制形状。以下是如何定义可用于在Triangle类中绘制形状的基本着色器的示例：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class Triangle&#123;</span><br><span class="line">	  private final String vertexShaderCode =</span><br><span class="line">            // This matrix member variable provides a hook to manipulate</span><br><span class="line">            // the coordinates of the objects that use this vertex shader</span><br><span class="line">            &quot;uniform mat4 uMVPMatrix;&quot; +</span><br><span class="line">                    &quot;attribute vec4 vPosition;&quot; +</span><br><span class="line">                    &quot;void main() &#123;&quot; +</span><br><span class="line">                    &quot;  gl_Position = uMVPMatrix * vPosition;&quot; +</span><br><span class="line">                    &quot;&#125;&quot;;</span><br><span class="line">  	  private final String fragmentShaderCode =</span><br><span class="line">            &quot;precision mediump float;&quot; +</span><br><span class="line">                    &quot;uniform vec4 vColor;&quot; +</span><br><span class="line">                    &quot;void main() &#123;&quot; +</span><br><span class="line">                    &quot;  gl_FragColor = vColor;&quot; +</span><br><span class="line">                    &quot;&#125;&quot;;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>着色器包含OpenGL着色语言（GLSL）代码，必须在OpenGL ES环境中使用它之前进行编译。要编译此代码，要Renderer类中创建以下该方法：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">public static int loadShader(int type, String shaderCode)&#123;</span><br><span class="line"></span><br><span class="line">      // create a vertex shader type (GLES20.GL_VERTEX_SHADER)</span><br><span class="line">      // or a fragment shader type (GLES20.GL_FRAGMENT_SHADER)</span><br><span class="line">      int shader = GLES20.glCreateShader(type);</span><br><span class="line"></span><br><span class="line">      // add the source code to the shader and compile it</span><br><span class="line">      GLES20.glShaderSource(shader, shaderCode);</span><br><span class="line">      GLES20.glCompileShader(shader);</span><br><span class="line"></span><br><span class="line">      return shader;</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
 <p>创建Draw()方法绘制形状<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">private int mPositionHandle;</span><br><span class="line">  private int mColorHandle;</span><br><span class="line">  private static final int COORDS_PER_VERTEX = 3;</span><br><span class="line">  private final int vertexCount = triangleCoords.length /COORDS_PER_VERTEX;</span><br><span class="line">  private final int vertexStride = COORDS_PER_VERTEX * 4; </span><br><span class="line"></span><br><span class="line">  public void draw(float[] mvpMatrix) &#123;</span><br><span class="line">      //将程序添加到OpenGL ES环境</span><br><span class="line">      GLES20.glUseProgram(mProgram);</span><br><span class="line">      //获取顶点着色器位置成员的句柄</span><br><span class="line">      mPositionHandle=GLES20.glGetAttribLocation(mProgram, &quot;vPosition&quot;);</span><br><span class="line">      //启用三角形顶点的句柄</span><br><span class="line">      GLES20.glEnableVertexAttribArray(mPositionHandle);</span><br><span class="line">      //准备三角坐标数据</span><br><span class="line">      GLES20.glVertexAttribPointer(mPositionHandle,COOR_PER_VERTEX,</span><br><span class="line">              GLES20.GL_FLOAT,false,vertexStride,vertexBuffer);</span><br><span class="line">      //获取片段着色器Color成员的句柄</span><br><span class="line">      mColorHandle=GLES20.glGetUniformLocation(mProgram,&quot;vColor&quot;);</span><br><span class="line">      //设置绘制三角形的颜色</span><br><span class="line">      GLES20.glUniform4fv(mColorHandle,1,color,0);</span><br><span class="line">      //获得形状的变换矩阵的handle</span><br><span class="line">      mMVPMatrixHandle=GLES20.glGetUniformLocation(mProgram,&quot;uMVPMatrix&quot;);</span><br><span class="line">      //把变换矩阵传给着色器</span><br><span class="line">      GLES20.glUniformMatrix4fv(mMVPMatrixHandle,1,false,mvpMatrix,0);</span><br><span class="line">      //绘制三角形</span><br><span class="line">      GLES20.glDrawArrays(GLES20.GL_TRIANGLES,0,vertexCount);</span><br><span class="line">      //禁用顶点数组</span><br><span class="line">      GLES20.glEnableVertexAttribArray(mPositionHandle);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></p>
-<p>最后在Renderer的onDrawFrame()方法中调用draw()方法.要想的三角形就出现啦!</p>
+<p>最后在Renderer的onDrawFrame()方法中调用draw()方法.要想的三角形就出现啦!<br><img src="/2018/07/26/opengl-trangle/trangle.png" alt=""><br>小白一个后续更新!</p>
 
   </section>
 
@@ -175,22 +175,21 @@
 <section class="read-more">
            
     
+        
+        
                
             <div class="read-more-item">
-                <span class="read-more-item-dim">Newer Post</span>
-                <h2 class="post-list__post-title post-title"><a href="/2018/07/21/mediaplayer/" title="浅谈Android MediaPlayer">浅谈Android MediaPlayer</a></h2>
+                <span class="read-more-item-dim">Older Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2018/07/26/mediaplayer/" title="浅谈Android MediaPlayer">浅谈Android MediaPlayer</a></h2>
                 <p class="excerpt">
                 
                 前言MediaPlayer是Android中多媒体框架中一个重要的组件,我们通过它可以控制在线或者本地音视频的播放过程.
-MeidaPlayer具体方法介绍void
-
+MeidaPlayer具体方法介绍1.void setDataSource(String  url)通过一个具体的路径来设置MediaPlayer的数据源，url可以是本地的一个
                 &hellip;
                 </p>
-                <div class="post-list__meta"><time datetime="2018-07-21T00:33:50.425Z" class="post-list__meta--date date">2018-07-21</time> &#8226; <span class="post-list__meta--tags tags">于 </span><a class="btn-border-small" href="/2018/07/21/mediaplayer/">继续阅读</a></div>
-                           
+                <div class="post-list__meta"><time datetime="2018-07-26T10:06:19.576Z" class="post-list__meta--date date">2018-07-26</time> &#8226; <span class="post-list__meta--tags tags">于 </span><a class="btn-border-small" href="/2018/07/26/mediaplayer/">继续阅读</a></div>
+                       
             </div>
-        
-        
         
      
    
