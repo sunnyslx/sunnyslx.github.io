@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>如何在ubuntu搭建Android开发环境 | Sunny.SLX的个人博.</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="要进行程序的开发前提是:搭建开发环境下面我就介绍一下如何搭建Android开发环境.
+一 安装jdkAndroid开发使用的语言是java,既然要使用java这就要牵扯到jdk了.步骤:1.1 下载jdk.官网地址:http://www.oracle.com/technetwork/java/javase/downloads1.2 解压安装.&amp;emsp;&amp;emsp;(1)进入home目录下,终端输">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="如何在ubuntu搭建Android开发环境 | Sunny.SLX的个人博.">
+    <meta name="twitter:description" content="要进行程序的开发前提是:搭建开发环境下面我就介绍一下如何搭建Android开发环境.
+一 安装jdkAndroid开发使用的语言是java,既然要使用java这就要牵扯到jdk了.步骤:1.1 下载jdk.官网地址:http://www.oracle.com/technetwork/java/javase/downloads1.2 解压安装.&amp;emsp;&amp;emsp;(1)进入home目录下,终端输">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="如何在ubuntu搭建Android开发环境 | Sunny.SLX的个人博.">
+    <meta property="og:description" content="要进行程序的开发前提是:搭建开发环境下面我就介绍一下如何搭建Android开发环境.
+一 安装jdkAndroid开发使用的语言是java,既然要使用java这就要牵扯到jdk了.步骤:1.1 下载jdk.官网地址:http://www.oracle.com/technetwork/java/javase/downloads1.2 解压安装.&amp;emsp;&amp;emsp;(1)进入home目录下,终端输">
+
+    
+    <meta name="author" content="Sunny.SLX">
+    
+    <link rel="stylesheet" href="/css/vno.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+    
+    <link rel="icon" href="/images/avatar-small.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+    <link rel="alternate" type="application/rss+xml" title="Sunny.SLX的个人博." href="/atom.xml">
+    
+
+    <link rel="canonical" href="http://yoursite.com/2018/07/30/environment/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background-cover.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 Sunny.SLX的个人博. 的主页"><img src="/images/avatar.jpg" width="80" alt="Sunny.SLX的个人博. logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for Sunny.SLX的个人博.">Sunny.SLX的个人博.</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="Visit the blog" class="blog-button">Blog</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/sunnyslx" title="GitHub" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  <li class="navigation__item">
+    <a href="https://twitter.com/onlymonniya" title="Twitter" target="_blank">
+      <i class='social fa fa-twitter'></i>
+      <span class="label">Twitter</span>
+    </a>
+  </li>
+
+  
+
+  <li class="navigation__item">
+    <a href="/atom.xml" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-purple"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2018-07-30T10:34:57.446Z" class="post-list__meta--date date">2018-07-30</time> &#8226; <span class="post-meta__tags tags">于  </span>
+      <span class="page-pv">
+       Read <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">如何在ubuntu搭建Android开发环境</h1>
+  </header>
+
+  <section class="post">
+    <p>要进行程序的开发前提是:<strong>搭建开发环境</strong>下面我就介绍一下如何搭建Android开发环境.</p>
+<h1 id="一-安装jdk"><a href="#一-安装jdk" class="headerlink" title="一 安装jdk"></a>一 安装jdk</h1><p>Android开发使用的语言是java,既然要使用java这就要牵扯到jdk了.<br>步骤:<br>1.1 下载jdk.官网地址:<br><a href="http://www.oracle.com/technetwork/java/javase/downloads" target="_blank" rel="noopener">http://www.oracle.com/technetwork/java/javase/downloads</a><br>1.2 解压安装.<br>&emsp;&emsp;(1)进入home目录下,终端输入 cd ~<br>&emsp;&emsp;(2)更新套件资讯:<br>&emsp;&emsp;&emsp;&emsp;①打开Ubuntu系统设置,设置HTTP、HTTPS网络代理以及端口<br>&emsp;&emsp;&emsp;&emsp;②终端输入：sudo gedit  /etc/apt/apt.conf<br>&emsp;&emsp;&emsp;&emsp;③在打开文件中，输入上网代理账号和密码，保存退出<br>        Acquire::http::proxy “<a href="http://username:password@ip地址+端口号/&quot;" target="_blank" rel="noopener">http://username:password@ip地址+端口号/&quot;</a>;<br>        Acquire::https::proxy “<a href="https://username:password@ip地址+端口号/&quot;" target="_blank" rel="noopener">https://username:password@ip地址+端口号/&quot;</a>;<br>&emsp;&emsp;&emsp;&emsp;④ 更新，终端输入:sudo apt-get update<br>1.3 新建jdk安装目录jvm,命令:sudo mkdir  /usr/lib/jvm<br>1.4 解压JDK至jvm<br>&emsp;&emsp;① 进入JDK压缩档所在目录：cd 目录<br>&emsp;&emsp;② 解压，终端输入：sudo tar -zxvf  ./jdk-8u91-linux-x64.tar.gz  -C  /usr/lib/jvm<br>1.5 重命名：sudo mv /usr/lib/jvm/jdk1.8.0_91/   /usr/lib/jvm/jdk18091<br>1.6 安装其他工具: sudo apt-get install git-core gnupg flex bison gperf build-essential zip curl zlib1g-dev libc6-dev lib32ncurses5-dev x11proto-core-dev libx11-dev lib32readline-gplv2-dev lib32z1-dev libgl1-mesa-dev g++-multilib mingw32 tofrodos python-markdown libxml2-utils xsltproc </p>
+<h1 id="二-配置jdk环境变量"><a href="#二-配置jdk环境变量" class="headerlink" title="二 配置jdk环境变量"></a>二 配置jdk环境变量</h1><p>2.1 编辑~/.bashrc 输入sudo gedit ~/.bashrc打开，在文件末尾加入<br>&emsp;&emsp;export JAVA_HOME=/usr/lib/jvm/jdk18091<br>&emsp;&emsp;export JRE_HOME=${JAVA_HOME}/jre<br>&emsp;&emsp;export CLASSPATH=.:${JAVA_HOME}/lib:${JRE_HOME}/lib<br>&emsp;&emsp;export PATH=${JAVA_HOME}/bin:$PATH<br>2.2 终端输入：java  -version，查询到JDK版本，配置成功</p>
+<h1 id="三-安装Android-Studio"><a href="#三-安装Android-Studio" class="headerlink" title="三 安装Android Studio"></a>三 安装Android Studio</h1><p>3.1 下载Android studio 下载地址 <a href="http://www.android-studio.org" target="_blank" rel="noopener">http://www.android-studio.org</a><br>3.2 解压安装<br>&emsp;&emsp;(1) 在home目录中新建安装目录installed<br>&emsp;&emsp;(2) 解压压缩档至installed<br>&emsp;&emsp;(3) 启动Android Studio， 终端输入：~/installed/android-studio/bin/studio.sh<br>&emsp;&emsp;(4) Android Studio 启动后可选择在线下载SDK，或指定一个已有SDK目录<br>&emsp;&emsp;(5)启动Android Studio后，在Configure中单击Create Desktop Entry，再在左侧图标右键选择lock</p>
+<h1 id="四-配置sdk环境变量"><a href="#四-配置sdk环境变量" class="headerlink" title="四 配置sdk环境变量"></a>四 配置sdk环境变量</h1><p>4.1 编辑~/.bashrc<br>(1) 终端输入sudo gedit ~/.bashrc<br>(2) 在打开文件末尾加入<br>export ANDROID_SDK=/home/用户名/installed/sdk<br>export PATH=${ANDROID_SDK}/platform-tools:${ANDROID_SDK}/tools:$PATH<br>(3) 终端输入：adb version，查询到版本号，配置成功<br>开发环境配置完毕后,下面就可以进行愉快的开发之旅了!</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">Older Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2018/07/30/activity/" title="详解Android Activity生命周期">详解Android Activity生命周期</a></h2>
+                <p class="excerpt">
+                
+                
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2018-07-30T10:27:13.098Z" class="post-list__meta--date date">2018-07-30</time> &#8226; <span class="post-list__meta--tags tags">于 </span><a class="btn-border-small" href="/2018/07/30/activity/">继续阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2018 Sunny.SLX - 本站点采用 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a href="http://hexo.io">Hexo</a> 搭建，使用 <a href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-78918255-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?9cdad07c755fa23f6aced510c6760e87";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
