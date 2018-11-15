@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>Android Handler消息处理机制 | Sunny.SLX的个人博.</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="我们知道activity的异常响应事件为5秒,也就是说.超过该时间就会报ANR(Application Not Response)异常,所以耗时操作就不能在主线程中进行，需要放入到子线程中。而当异步处理成功后需要更新视图,但子线程中不能更新UI,所以这个时候就需要借助handler来处理。即handler在新线程中发送消息,在主线程中接收并处理消息。123456789101112131415161">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="Android Handler消息处理机制 | Sunny.SLX的个人博.">
+    <meta name="twitter:description" content="我们知道activity的异常响应事件为5秒,也就是说.超过该时间就会报ANR(Application Not Response)异常,所以耗时操作就不能在主线程中进行，需要放入到子线程中。而当异步处理成功后需要更新视图,但子线程中不能更新UI,所以这个时候就需要借助handler来处理。即handler在新线程中发送消息,在主线程中接收并处理消息。123456789101112131415161">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Android Handler消息处理机制 | Sunny.SLX的个人博.">
+    <meta property="og:description" content="我们知道activity的异常响应事件为5秒,也就是说.超过该时间就会报ANR(Application Not Response)异常,所以耗时操作就不能在主线程中进行，需要放入到子线程中。而当异步处理成功后需要更新视图,但子线程中不能更新UI,所以这个时候就需要借助handler来处理。即handler在新线程中发送消息,在主线程中接收并处理消息。123456789101112131415161">
+
+    
+    <meta name="author" content="Sunny.SLX">
+    
+    <link rel="stylesheet" href="/css/vno.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+    
+    <link rel="icon" href="/images/avatar-small.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+    <link rel="alternate" type="application/rss+xml" title="Sunny.SLX的个人博." href="/atom.xml">
+    
+
+    <link rel="canonical" href="http://yoursite.com/2018/11/15/handler/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background-cover.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 Sunny.SLX的个人博. 的主页"><img src="/images/avatar.jpg" width="80" alt="Sunny.SLX的个人博. logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for Sunny.SLX的个人博.">Sunny.SLX的个人博.</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="Visit the blog" class="blog-button">Blog</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/sunnyslx" title="GitHub" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  <li class="navigation__item">
+    <a href="https://twitter.com/onlymonniya" title="Twitter" target="_blank">
+      <i class='social fa fa-twitter'></i>
+      <span class="label">Twitter</span>
+    </a>
+  </li>
+
+  
+
+  <li class="navigation__item">
+    <a href="/atom.xml" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-purple"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2018-11-15T07:50:38.765Z" class="post-list__meta--date date">2018-11-15</time> &#8226; <span class="post-meta__tags tags">于  </span>
+      <span class="page-pv">
+       Read <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">Android Handler消息处理机制</h1>
+  </header>
+
+  <section class="post">
+    <p>我们知道activity的异常响应事件为5秒,也就是说.超过该时间就会报ANR(Application Not Response)异常,所以耗时操作就不能在主线程中进行，需要放入到子线程中。而当异步处理成功后需要更新视图,但子线程中不能更新UI,所以这个时候就需要借助handler来处理。<br>即handler在新线程中发送消息,在主线程中接收并处理消息。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">@Override</span><br><span class="line"> protected void onCreate(Bundle savedInstanceState) &#123;</span><br><span class="line">     super.onCreate(savedInstanceState);</span><br><span class="line">     setContentView(R.layout.activity_main);</span><br><span class="line">     new Thread(new Runnable() &#123;</span><br><span class="line">         @Override</span><br><span class="line">         public void run() &#123;</span><br><span class="line">             //发送消息</span><br><span class="line">             Message message=Message.obtain();</span><br><span class="line">             message.what=0x001;</span><br><span class="line">             myHandler.sendMessage(message);</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;).start();</span><br><span class="line"> &#125;</span><br><span class="line"></span><br><span class="line"> @SuppressLint(&quot;HandlerLeak&quot;)</span><br><span class="line"> private Handler myHandler =new Handler()&#123;</span><br><span class="line">     @Override</span><br><span class="line">     public void handleMessage(Message msg) &#123;</span><br><span class="line">         super.handleMessage(msg);</span><br><span class="line">         //接受消息,并处理消息</span><br><span class="line">         switch (msg.what)&#123;</span><br><span class="line">             case 0x001:</span><br><span class="line">                 break;</span><br><span class="line">         &#125;</span><br><span class="line">     &#125;</span><br><span class="line"> &#125;;</span><br></pre></td></tr></table></figure></p>
+<h2 id="一、Handler"><a href="#一、Handler" class="headerlink" title="一、Handler"></a>一、Handler</h2><h3 id="1-1-Handler作用"><a href="#1-1-Handler作用" class="headerlink" title="1.1 Handler作用"></a>1.1 Handler作用</h3><p>①在新线程中发送消息<br>②在主线程中获取和处理消息</p>
+<h3 id="1-2-Handler中用来发送和处理消息的方法"><a href="#1-2-Handler中用来发送和处理消息的方法" class="headerlink" title="1.2 Handler中用来发送和处理消息的方法"></a>1.2 Handler中用来发送和处理消息的方法</h3><p>★  void handleMessage（Message msg）：处理消息的方法。通常用于被重写。<br>★  final boolean hasMessages（int what）:检查消息队列中是否包含what属性指定值的消息。<br>★  final boolean hasMessages（int what，Object object）:检查消息队列中是否包含what属性为指定值且object属性为指定消息对象的消息。<br>★  多个重载的Message obtainMessage（）：获取消息。<br>★  sendEmptyMessage（int what）:发送空消息。<br>★  final boolean sendEmptyMessageDelayed（int what，long delayMillis）：指定多少毫秒后发送空消息。<br>★  final boolean sendMessage（Message msg）：立即发送消息。<br>★final boolean sendMessageDelayed（Message msg，long delayMillis）：指定多少毫秒后发送消息。</p>
+<h3 id="1-3-handler发送消息流程"><a href="#1-3-handler发送消息流程" class="headerlink" title="1.3 handler发送消息流程"></a>1.3 handler发送消息流程</h3><p>程序使用handler发送消息，而handler发送的消息被送到了指定的MessageQueue中。而MessageQueue被Looper管理，Looper循环的去读取MessageQueue中的Message,并把消息分发给对应的handler进行处理。</p>
+<h2 id="二、MessageQueue"><a href="#二、MessageQueue" class="headerlink" title="二、MessageQueue"></a>二、MessageQueue</h2><p>消息队列，采用先进先出的方式去管理Message。在程序创建Looper对象时，会在它的构造中创建MessageQueue对象<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">private Looper(boolean quitAllowed) &#123;</span><br><span class="line">    mQueue = new MessageQueue(quitAllowed);</span><br><span class="line">    mThread = Thread.currentThread();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>MessageQueue中有两个重要的方法，一个是 enqueueMessage(Message msg, long when)即入队方法，next()即出队。</p>
+<h2 id="三、Looper"><a href="#三、Looper" class="headerlink" title="三、Looper"></a>三、Looper</h2><p>通过查看Looper源码我们知道在Looper的构造中创建了MessageQueue，而Looper又是怎么被创建的呢？</p>
+<h3 id="3-1-Looper创建方法"><a href="#3-1-Looper创建方法" class="headerlink" title="3.1 Looper创建方法"></a>3.1 Looper创建方法</h3><h4 id="3-1-1-UI线程"><a href="#3-1-1-UI线程" class="headerlink" title="3.1.1 UI线程"></a>3.1.1 UI线程</h4><p>在主线程中，系统已经初始化了一个Looper对象，所有程序只需要创建Handler对象即可，然后就可以通过Handler发送消息，处理消息。</p>
+<h4 id="3-1-2-子线程"><a href="#3-1-2-子线程" class="headerlink" title="3.1.2 子线程"></a>3.1.2 子线程</h4><p>子线程中必须自己创建一个Looper对象，方法为：Looper.prepare()。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">private static void prepare(boolean quitAllowed) &#123;</span><br><span class="line">    if (sThreadLocal.get() != null) &#123;</span><br><span class="line">        throw new RuntimeException(&quot;Only one Looper may be created per thread&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    sThreadLocal.set(new Looper(quitAllowed));</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<h3 id="3-2-Looper中的loop-方法"><a href="#3-2-Looper中的loop-方法" class="headerlink" title="3.2 Looper中的loop()方法"></a>3.2 Looper中的loop()方法</h3><p>loop()方法使用一个死循环不断的去读取MessageQueue中的消息，并将取出消息发送给该消息对应的handler去处理。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br></pre></td><td class="code"><pre><span class="line">for (;;) &#123;</span><br><span class="line">    Message msg = queue.next(); // might block</span><br><span class="line">    if (msg == null) &#123;</span><br><span class="line">        // No message indicates that the message queue is quitting.</span><br><span class="line">        return;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // This must be in a local variable, in case a UI event sets the logger</span><br><span class="line">    final Printer logging = me.mLogging;</span><br><span class="line">    if (logging != null) &#123;</span><br><span class="line">        logging.println(&quot;&gt;&gt;&gt;&gt;&gt; Dispatching to &quot; + msg.target + &quot; &quot; +</span><br><span class="line">                msg.callback + &quot;: &quot; + msg.what);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    final long slowDispatchThresholdMs = me.mSlowDispatchThresholdMs;</span><br><span class="line"></span><br><span class="line">    final long traceTag = me.mTraceTag;</span><br><span class="line">    if (traceTag != 0 &amp;&amp; Trace.isTagEnabled(traceTag)) &#123;</span><br><span class="line">        Trace.traceBegin(traceTag, msg.target.getTraceName(msg));</span><br><span class="line">    &#125;</span><br><span class="line">    final long start = (slowDispatchThresholdMs == 0) ? 0 : SystemClock.uptimeMillis();</span><br><span class="line">    final long end;</span><br><span class="line">    try &#123;</span><br><span class="line">        msg.target.dispatchMessage(msg);</span><br><span class="line">        end = (slowDispatchThresholdMs == 0) ? 0 : SystemClock.uptimeMillis();</span><br><span class="line">    &#125; finally &#123;</span><br><span class="line">        if (traceTag != 0) &#123;</span><br><span class="line">            Trace.traceEnd(traceTag);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    if (slowDispatchThresholdMs &gt; 0) &#123;</span><br><span class="line">        final long time = end - start;</span><br><span class="line">        if (time &gt; slowDispatchThresholdMs) &#123;</span><br><span class="line">            Slog.w(TAG, &quot;Dispatch took &quot; + time + &quot;ms on &quot;</span><br><span class="line">                    + Thread.currentThread().getName() + &quot;, h=&quot; +</span><br><span class="line">                    msg.target + &quot; cb=&quot; + msg.callback + &quot; msg=&quot; + msg.what);</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    if (logging != null) &#123;</span><br><span class="line">        logging.println(&quot;&lt;&lt;&lt;&lt;&lt; Finished to &quot; + msg.target + &quot; &quot; + msg.callback);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    // Make sure that during the course of dispatching the</span><br><span class="line">    // identity of the thread wasn&apos;t corrupted.</span><br><span class="line">    final long newIdent = Binder.clearCallingIdentity();</span><br><span class="line">    if (ident != newIdent) &#123;</span><br><span class="line">        Log.wtf(TAG, &quot;Thread identity changed from 0x&quot;</span><br><span class="line">                + Long.toHexString(ident) + &quot; to 0x&quot;</span><br><span class="line">                + Long.toHexString(newIdent) + &quot; while dispatching to &quot;</span><br><span class="line">                + msg.target.getClass().getName() + &quot; &quot;</span><br><span class="line">                + msg.callback + &quot; what=&quot; + msg.what);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    msg.recycleUnchecked();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>loop()方法是一个死循环，唯一跳出的循环的方式是MessageQueue的next方法返回null，当Looper退出后，Handler就无法发送消息，send出去的消息会返回false；当我们在子线程中创建了Looper并且所有的消息都处理完毕的时候，要记得调用 quit 方法，不让这个Looper就一直处于阻塞状态一直那么等待下去。</p>
+<h2 id="四、总结"><a href="#四、总结" class="headerlink" title="四、总结"></a>四、总结</h2><p>★  Looper：每一个线程只有一个Looper，它负责管理MessageQueues，不断的从MessageQueue中读取消息，在把读取到的消息发送给对应的Handler处理。<br>★  MessageQueue：由Looper管理，采用先进先出的方式管理Message。<br>★  Handler：把消息发送给Looper管理的MessageQueue，并负责处理Looper分发给它的消息。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">Older Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2018/10/22/coordinatelayout/" title="使用CoordinatorLayout打造酷炫效果">使用CoordinatorLayout打造酷炫效果</a></h2>
+                <p class="excerpt">
+                
+                CoordinatorLayout简介CoordinatorLayout是Android5.0之后推出的一个功能,它与AppBarLayout结合可以打造非常酷炫的效果.一般将CoordinatorLayout布局分为两部分,上半部分时AppBarLayout包裹的内容,实现该布局上滑隐藏,下滑显示
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2018-10-22T07:28:48.000Z" class="post-list__meta--date date">2018-10-22</time> &#8226; <span class="post-list__meta--tags tags">于 </span><a class="btn-border-small" href="/2018/10/22/coordinatelayout/">继续阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2018 Sunny.SLX - 本站点采用 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a href="http://hexo.io">Hexo</a> 搭建，使用 <a href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-78918255-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?9cdad07c755fa23f6aced510c6760e87";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
