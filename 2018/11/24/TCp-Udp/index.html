@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="z">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    
+    <title>网络数据传输协议 | Sunny.SLX的个人博.</title>
+    <meta name="renderer" content="webkit">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+    <meta name="description" content="一、TCP协议TCP协议是面向连接、可靠的数据传输协议数据从应用层发下来，会在每一层加上头部信息进行封装，然后发送数据接收端，所有数据的发送和接收其实是数据的封装和解封装的过程。由于TCP是可靠的传输，无论哪一方向另一方发送数据之前，都必须在双方之间建立一个三次握手的协议，断开连接就必须建立四次挥手的协议。
+1.1 TCP的三次握手协议在Tcp/Ip协议中，TCP提供可靠的连接服务，连接是通过三次">
+
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="网络数据传输协议 | Sunny.SLX的个人博.">
+    <meta name="twitter:description" content="一、TCP协议TCP协议是面向连接、可靠的数据传输协议数据从应用层发下来，会在每一层加上头部信息进行封装，然后发送数据接收端，所有数据的发送和接收其实是数据的封装和解封装的过程。由于TCP是可靠的传输，无论哪一方向另一方发送数据之前，都必须在双方之间建立一个三次握手的协议，断开连接就必须建立四次挥手的协议。
+1.1 TCP的三次握手协议在Tcp/Ip协议中，TCP提供可靠的连接服务，连接是通过三次">
+
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="网络数据传输协议 | Sunny.SLX的个人博.">
+    <meta property="og:description" content="一、TCP协议TCP协议是面向连接、可靠的数据传输协议数据从应用层发下来，会在每一层加上头部信息进行封装，然后发送数据接收端，所有数据的发送和接收其实是数据的封装和解封装的过程。由于TCP是可靠的传输，无论哪一方向另一方发送数据之前，都必须在双方之间建立一个三次握手的协议，断开连接就必须建立四次挥手的协议。
+1.1 TCP的三次握手协议在Tcp/Ip协议中，TCP提供可靠的连接服务，连接是通过三次">
+
+    
+    <meta name="author" content="Sunny.SLX">
+    
+    <link rel="stylesheet" href="/css/vno.css">
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+
+    
+    <link rel="icon" href="/images/avatar-small.png">
+    
+
+    <meta name="generator" content="hexo"/>
+    
+    <link rel="alternate" type="application/rss+xml" title="Sunny.SLX的个人博." href="/atom.xml">
+    
+
+    <link rel="canonical" href="http://yoursite.com/2018/11/24/TCp-Udp/"/>
+
+                 
+</head>
+
+<body class="home-template no-js">
+    <script src="//cdn.bootcss.com/jquery/2.1.4/jquery.min.js"></script>
+    <script src="/js/main.js"></script>
+    <span class="mobile btn-mobile-menu">
+        <i class="fa fa-list btn-mobile-menu__icon"></i>
+        <i class="fa fa-angle-up btn-mobile-close__icon hidden"></i>
+    </span>
+
+    
+<header class="panel-cover panel-cover--collapsed" style="background-image: url(/images/background-cover.jpg)">
+  <div class="panel-main">
+    <div class="panel-main__inner panel-inverted">
+    <div class="panel-main__content">
+
+        <a href="/" title="前往 Sunny.SLX的个人博. 的主页"><img src="/images/avatar.jpg" width="80" alt="Sunny.SLX的个人博. logo" class="panel-cover__logo logo" /></a>
+        <h1 class="panel-cover__title panel-title"><a href="/" title="link to homepage for Sunny.SLX的个人博.">Sunny.SLX的个人博.</a></h1>
+        
+        <hr class="panel-cover__divider" />
+        <p class="panel-cover__description"></p>
+        <hr class="panel-cover__divider panel-cover__divider--secondary" />
+
+        <div class="navigation-wrapper">
+          <div>
+          <nav class="cover-navigation cover-navigation--primary">
+            <ul class="navigation">
+              <li class="navigation__item"><a href="/#blog" title="Visit the blog" class="blog-button">Blog</a></li>
+            
+            </ul>
+          </nav>
+          </div>
+          <div>
+          <nav class="cover-navigation navigation--social">
+  <ul class="navigation">
+
+  <!-- Weibo-->
+  
+
+  <!-- Github -->
+  
+  <li class="navigation__item">
+    <a href="https://github.com/sunnyslx" title="GitHub" target="_blank">
+      <i class='social fa fa-github'></i>
+      <span class="label">Github</span>
+    </a>
+  </li>
+
+
+<!-- Stack Overflow -->
+        
+
+  <!-- Google Plus -->
+  
+
+<!-- Facebook -->
+
+  
+<!-- Twitter -->
+
+  <li class="navigation__item">
+    <a href="https://twitter.com/onlymonniya" title="Twitter" target="_blank">
+      <i class='social fa fa-twitter'></i>
+      <span class="label">Twitter</span>
+    </a>
+  </li>
+
+  
+
+  <li class="navigation__item">
+    <a href="/atom.xml" title="RSS" target="_blank">
+      <i class='social fa fa-rss'></i>
+      <span class="label">RSS</span>
+    </a>
+  </li>
+
+
+
+  </ul>
+</nav>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="panel-cover--overlay cover-purple"></div>
+  </div> 
+</header>
+
+    <div class="content-wrapper">
+        <div class="content-wrapper__inner">
+            <article class="post-container post-container--single">
+
+  <header class="post-header">
+    <div class="post-meta">
+      <time datetime="2018-11-24T07:35:21.000Z" class="post-list__meta--date date">2018-11-24</time> &#8226; <span class="post-meta__tags tags">于  </span>
+      <span class="page-pv">
+       Read <span id="busuanzi_value_page_pv"><i class="fa fa-spinner fa-spin"></i></span>
+      </span> 
+   
+    </div>
+    <h1 class="post-title">网络数据传输协议</h1>
+  </header>
+
+  <section class="post">
+    <h2 id="一、TCP协议"><a href="#一、TCP协议" class="headerlink" title="一、TCP协议"></a>一、TCP协议</h2><p>TCP协议是面向连接、可靠的数据传输协议<br>数据从应用层发下来，会在每一层加上头部信息进行封装，然后发送数据接收端，所有数据的发送和接收其实是数据的封装和解封装的过程。<br>由于TCP是可靠的传输，无论哪一方向另一方发送数据之前，都必须在双方之间建立一个三次握手的协议，断开连接就必须建立四次挥手的协议。</p>
+<h3 id="1-1-TCP的三次握手协议"><a href="#1-1-TCP的三次握手协议" class="headerlink" title="1.1 TCP的三次握手协议"></a>1.1 TCP的三次握手协议</h3><p>在Tcp/Ip协议中，TCP提供可靠的连接服务，连接是通过三次握手进行初始化的。三次握手的目的是同步连接双方的序列号和确认号，并交换TCP窗口大小信息。<br>下图为TCP的通信过程：<br><img src="https://upload-images.jianshu.io/upload_images/13118706-47d7306ba832d0eb.jpeg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240" alt="index.jpeg"></p>
+<h4 id="1-1-1-三次握手具体过程"><a href="#1-1-1-三次握手具体过程" class="headerlink" title="1.1.1 三次握手具体过程"></a>1.1.1 三次握手具体过程</h4><p>①  第一次握手<br>客户端向服务器发送连接请求报文，然后客户端处于进入SYN_SEND状态，等待服务器的确认。（客户端的建立连接并等待确认）<br>②  第二次握手<br>服务器收到SYN报文，并对这个SYN报文段进行确认，同时发送SYN请求信息，服务器端将上述所有信息放到一个报文段(即SYN+ACK报文段)中，一并将信息发送客户端，然后服务器进入SYN_RECV状态。（服务器端发送相关报文段信息并等待连接）<br>③ 第三次握手<br>客户端收到SYN+ACK报文段，向服务器发送ACK报文段，当报文发送完毕就完成了Tcp三次握手协议。（客户端接收到服务器端信息并实现连接）</p>
+<h4 id="1-1-2-四次挥手具体过程"><a href="#1-1-2-四次挥手具体过程" class="headerlink" title="1.1.2 四次挥手具体过程"></a>1.1.2 四次挥手具体过程</h4><p>① 第一次挥手<br>客户端向服务器端发送一个FIN报文段，服务器端进入FIN_WAIT状态，表示已经没有数据向服务器端发送了。<br>② 第二次挥手<br>服务器端收到客户端发送过来的FIN报文，向客户端回一个ACK报文，服务器端进入CLOSE_WAIT状态，并告诉客户端它也没有数据发送了。<br>③ 第三次挥手<br>服务器端向客户端发送FIN报文，请求关闭连接。<br>④ 第四次挥手<br>客户端接收到服务器端的FIN报文，并向服务器端回一个ACK报文，关闭连接。<br>由于TCP保证了数据传输的可靠性，所以对性能消耗也会变大，数据传输的效率也会变低。</p>
+<p>##二、UDP协议<br>和TCP一样，UDP也属于传输层协议，其主要作用是<strong>将网络数据流量压缩成数据包的形式</strong>，内容组成为<strong>报文头+具体传输的数据</strong>。</p>
+<h3 id="2-1-UDP特征"><a href="#2-1-UDP特征" class="headerlink" title="2.1 UDP特征"></a>2.1 UDP特征</h3><p>① UDP是无连接传输协议；<br>② 由于传输数据不需要建立连接，因此也就不需要维护连接状态，包括收发状态；<br>③ UDP信息包的标题很短，只有8个字节，相对于TCP的20个字节信息包的额外开销很小；<br>④ 吞吐量不受拥挤控制算法的调节，只受应用软件生成数据的速率、传输带宽、源端和终端主机性能的限制；<br>⑤ UDP尽最大努力交付，但不保证可靠交付；<br>⑥ UDP是面向报文的。<br>总结以下：UDP连接具有资源消耗少，处理速度的优点，使用通常音频、视频、普通数据使用UDP传输数据较多。</p>
+<p>##三、TCP和UDP的区别<br>① TCP是面向连接的，保证传输数据的可靠安全，而UDP是非面向连接的，不可靠但高效率；<br>② TCP占用资源多，而UDP占用资源少；<br>③ TCP是流模式（通信双方是互相、明确的），而UDP是报文模式；<br>④ 应用场景不同。</p>
+<p>##四、TCP的粘包和UDP的丢包</p>
+<h3 id="4-1-TCP的粘包"><a href="#4-1-TCP的粘包" class="headerlink" title="4.1 TCP的粘包"></a>4.1 TCP的粘包</h3><p><strong>TCP的粘包现象</strong><br>是指：发送方发送的若干数据包到接收方接收时粘成一包，从接收缓冲区来看就是，后一包数据的头紧接着前一包数据的尾。<br><strong>TCP粘包处理方法</strong><br>应用程序在处理从缓存读取的分组时，读完一条数据就紧接着读取下一条数据，直到所有的数据都被处理。</p>
+<h3 id="4-2-UDP的丢包"><a href="#4-2-UDP的丢包" class="headerlink" title="4.2 UDP的丢包"></a>4.2 UDP的丢包</h3><p><strong>UDP丢包现象</strong><br>是指由于UDP是不可靠连接，受到各种因素影响，数据包可能会在接收过程中丢失一部分，从而导致数据的不完整。</p>
+
+  </section>
+
+</article>
+
+<section class="read-more">
+           
+    
+        
+        
+               
+            <div class="read-more-item">
+                <span class="read-more-item-dim">Older Post</span>
+                <h2 class="post-list__post-title post-title"><a href="/2018/11/15/handler/" title="Android Handler消息处理机制">Android Handler消息处理机制</a></h2>
+                <p class="excerpt">
+                
+                我们知道activity的异常响应事件为5秒,也就是说.超过该时间就会报ANR(Application Not Response)异常,所以耗时操作就不能在主线程中进行，需要放入到子线程中。而当异步处理成功后需要更新视图,但子线程中不能更新UI,所以这个时候就需要借助handler来处理。即hand
+                &hellip;
+                </p>
+                <div class="post-list__meta"><time datetime="2018-11-15T07:50:38.765Z" class="post-list__meta--date date">2018-11-15</time> &#8226; <span class="post-list__meta--tags tags">于 </span><a class="btn-border-small" href="/2018/11/15/handler/">继续阅读</a></div>
+                       
+            </div>
+        
+     
+   
+   
+  
+</section>
+
+  
+
+            <footer class="footer">
+    <span class="footer__copyright">
+        &copy; 2018 Sunny.SLX - 本站点采用 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/">知识共享署名-非商业性使用-相同方式共享 4.0 国际许可协议</a>
+       
+    </span>
+    <span class="footer__copyright">
+             - 基于 <a href="http://hexo.io">Hexo</a> 搭建，使用 <a href="https://github.com/monniya/hexo-theme-new-vno ">new-vno</a> 主题，由<a href="https://monniya.com ">@Monniya</a> 修改自 <a href="https://github.com/lenbo-ma/hexo-theme-vno" target="_blank">Vno</a>, 原创出自<a href="http://github.com/onevcat/vno" target="_blank">onevcat</a>
+         </span>
+       
+    
+    
+</footer>
+
+
+        </div>
+    </div>
+
+     
+<script>
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+	ga('create', 'UA-78918255-1', 'auto');
+	ga('send', 'pageview');
+</script>
+
+    
+    <script>
+        var _hmt = _hmt || [];
+        (function() {
+            var hm = document.createElement("script");
+            hm.src = "//hm.baidu.com/hm.js?9cdad07c755fa23f6aced510c6760e87";
+            var s = document.getElementsByTagName("script")[0]; 
+            s.parentNode.insertBefore(hm, s);
+        })();
+    </script>
+
+
+
+    <script async src="https://dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    
+</body>
+</html>
